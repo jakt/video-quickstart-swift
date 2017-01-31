@@ -7,6 +7,8 @@
 
 import UIKit
 import Intents
+import PusherSwift
+import SocketIO
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,6 +19,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                      didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
 
+//        let url = URL(string: "")!
+//        let config = SocketIOClientConfiguration()
+//        let socket = SocketIOClient(socketURL: url, config: config)
+//        
+//        socket.on("connect") { (data:[Any], ack:SocketAckEmitter) in
+//            print("test")
+//        }
+        
+        PusherManager.shared.setupPusher()
+        
         return true
     }
 
@@ -38,5 +50,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         return true
+    }
+    
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        PusherManager.shared.updateBackgroundTask()
+    }
+    
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        PusherManager.shared.invalidateBackgroundTask()
+    }
+}
+
+class AuthRequestBuilderOld: AuthRequestBuilderProtocol {
+    func requestFor(socketID: String, channel: PusherChannel) -> NSMutableURLRequest? {
+        let request = NSMutableURLRequest(url: URL(string: "http://localhost:9292/pusher/auth")!)
+        request.httpMethod = "POST"
+        request.httpBody = "socket_id=\(socketID)&channel_name=\(channel.name)".data(using: String.Encoding.utf8)
+        return request
+    }
+}
+
+class AuthRequestBuilder: AuthRequestBuilderProtocol {
+    func requestFor(socketID: String, channelName: String) -> URLRequest? {
+        var request = URLRequest(url: URL(string: "http://localhost:9292/pusher/auth")!)
+        request.httpMethod = "POST"
+        request.httpBody = "socket_id=\(socketID)&channel_name=\(channelName)".data(using: String.Encoding.utf8)
+        return request
     }
 }

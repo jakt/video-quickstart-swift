@@ -9,6 +9,7 @@ import UIKit
 
 import TwilioVideo
 import CallKit
+import PusherSwift
 
 class ViewController: UIViewController {
 
@@ -16,8 +17,10 @@ class ViewController: UIViewController {
     
     // Configure access token manually for testing, if desired! Create one manually in the console
     // at https://www.twilio.com/user/account/video/dev-tools/testing-tools
-    var accessToken = "TWILIO_ACCESS_TOKEN"
-
+//    var accessToken = "TWILIO_ACCESS_TOKEN"
+//        var accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImN0eSI6InR3aWxpby1mcGE7dj0xIn0.eyJqdGkiOiJTSzdhMDA0MTgwODQ3MDM1Mjk5ZTA2ODk2ZDY5MWFiZWMxLTE0ODU4OTE5NDgiLCJpc3MiOiJTSzdhMDA0MTgwODQ3MDM1Mjk5ZTA2ODk2ZDY5MWFiZWMxIiwic3ViIjoiQUM0OGI1YWE0OGMyNzdmOTE2YTVkNjIxYmU4Y2NhMjcxZiIsImV4cCI6MTQ4NTg5NTU0OCwiZ3JhbnRzIjp7ImlkZW50aXR5Ijoib25lIiwicnRjIjp7ImNvbmZpZ3VyYXRpb25fcHJvZmlsZV9zaWQiOiJWUzVkMDI2MDQxNzNmZWVhYzM0MTIyOTIxZjQzNDc4N2JkIn19fQ.X667SA31BgSivcZxS7RZkuIyMjyuz6D-KZJfCJxgSVY"
+    var accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImN0eSI6InR3aWxpby1mcGE7dj0xIn0.eyJqdGkiOiJTSzdhMDA0MTgwODQ3MDM1Mjk5ZTA2ODk2ZDY5MWFiZWMxLTE0ODU4OTE5MzMiLCJpc3MiOiJTSzdhMDA0MTgwODQ3MDM1Mjk5ZTA2ODk2ZDY5MWFiZWMxIiwic3ViIjoiQUM0OGI1YWE0OGMyNzdmOTE2YTVkNjIxYmU4Y2NhMjcxZiIsImV4cCI6MTQ4NTg5NTUzMywiZ3JhbnRzIjp7ImlkZW50aXR5IjoidHdvIiwicnRjIjp7ImNvbmZpZ3VyYXRpb25fcHJvZmlsZV9zaWQiOiJWUzVkMDI2MDQxNzNmZWVhYzM0MTIyOTIxZjQzNDc4N2JkIn19fQ.6j_yqwTgMQatmuwi_daFDap-tAQNlh5-XQ9jy-TCTtI"
+    
     // Configure remote URL to fetch token from
     var tokenUrl = "http://localhost:8000/token.php"
     
@@ -67,7 +70,7 @@ class ViewController: UIViewController {
     // MARK: UIViewController
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // LocalMedia represents the collection of tracks that we are sending to other Participants from our VideoClient.
         localMedia = TVILocalMedia()
         
@@ -86,6 +89,20 @@ class ViewController: UIViewController {
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(ViewController.dismissKeyboard))
         self.view.addGestureRecognizer(tap)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        EntryManager.presentEntry(fieldName: "User Name", viewController: self) { (userId:String?) in
+            PusherManager.shared.userId = userId
+        }
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.didRecieveCall), name: NSNotification.Name(rawValue: "call"), object: nil)
+    }
+    
+    func didRecieveCall() {
+        self.reportIncomingCall(uuid: UUID(), roomName: self.roomTextField.text) { _ in
+//
+        }
     }
 
     // MARK: IBActions
