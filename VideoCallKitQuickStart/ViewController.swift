@@ -18,7 +18,7 @@ class ViewController: UIViewController {
     // Configure access token manually for testing, if desired! Create one manually in the console
     // at https://www.twilio.com/user/account/video/dev-tools/testing-tools
     var _accessToken = ""
-//        var _accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImN0eSI6InR3aWxpby1mcGE7dj0xIn0.eyJqdGkiOiJTSzdhMDA0MTgwODQ3MDM1Mjk5ZTA2ODk2ZDY5MWFiZWMxLTE0ODU5NzI4ODciLCJpc3MiOiJTSzdhMDA0MTgwODQ3MDM1Mjk5ZTA2ODk2ZDY5MWFiZWMxIiwic3ViIjoiQUM0OGI1YWE0OGMyNzdmOTE2YTVkNjIxYmU4Y2NhMjcxZiIsImV4cCI6MTQ4NTk3NjQ4NywiZ3JhbnRzIjp7ImlkZW50aXR5IjoiSmF5IiwicnRjIjp7ImNvbmZpZ3VyYXRpb25fcHJvZmlsZV9zaWQiOiJWUzVkMDI2MDQxNzNmZWVhYzM0MTIyOTIxZjQzNDc4N2JkIn19fQ.M6vKKTAMmfnSQsSvQC8kto1lapnOLvoTW7_pQkf1Xc4"
+//        var _accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImN0eSI6InR3aWxpby1mcGE7dj0xIn0.eyJqdGkiOiJTSzdhMDA0MTgwODQ3MDM1Mjk5ZTA2ODk2ZDY5MWFiZWMxLTE0ODU5ODQ4NzkiLCJpc3MiOiJTSzdhMDA0MTgwODQ3MDM1Mjk5ZTA2ODk2ZDY5MWFiZWMxIiwic3ViIjoiQUM0OGI1YWE0OGMyNzdmOTE2YTVkNjIxYmU4Y2NhMjcxZiIsImV4cCI6MTQ4NTk4ODQ3OSwiZ3JhbnRzIjp7ImlkZW50aXR5IjoiSmF5IiwicnRjIjp7ImNvbmZpZ3VyYXRpb25fcHJvZmlsZV9zaWQiOiJWUzVkMDI2MDQxNzNmZWVhYzM0MTIyOTIxZjQzNDc4N2JkIn19fQ.WiWAjSAo1TRwZZtzeHRhXAMSBQLtnZEq4GbafFoRJZg"
 
     var accessToken:String {
         get {

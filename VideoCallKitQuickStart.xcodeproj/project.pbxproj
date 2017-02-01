@@ -206,7 +206,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = Twilio;
 				TargetAttributes = {
 					8B79D4651C2252A100489AA5 = {
@@ -428,6 +428,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A319F80EF2A2D55BF8C10DC2 /* Pods-TwilioVideo-VideoCallKitQuickStart.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 2PG2ASWQ43;
@@ -451,6 +452,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3B00D88986A97F22AB03FFC9 /* Pods-TwilioVideo-VideoCallKitQuickStart.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 2PG2ASWQ43;
