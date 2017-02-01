@@ -18,6 +18,8 @@
 		304A80CD1C23352100CB8C03 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 304A80CC1C23352100CB8C03 /* CoreMedia.framework */; };
 		304A80CF1C23352700CB8C03 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 304A80CE1C23352700CB8C03 /* SystemConfiguration.framework */; };
 		4BAA74EB1D8B5CBE00239F19 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BAA74EA1D8B5CBE00239F19 /* Utils.swift */; };
+		74A0BF081E41355200D23390 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A0BF071E41355200D23390 /* Helpers.swift */; };
+		74A0BF0A1E41B13000D23390 /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A0BF091E41B13000D23390 /* Call.swift */; };
 		74CB56B41E4010C300A468D4 /* PusherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74CB56B31E4010C300A468D4 /* PusherManager.swift */; };
 		8B79D46A1C2252A100489AA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B79D4691C2252A100489AA5 /* AppDelegate.swift */; };
 		8B79D46C1C2252A100489AA5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B79D46B1C2252A100489AA5 /* ViewController.swift */; };
@@ -54,6 +56,8 @@
 		304A80CE1C23352700CB8C03 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		3B00D88986A97F22AB03FFC9 /* Pods-TwilioVideo-VideoCallKitQuickStart.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TwilioVideo-VideoCallKitQuickStart.release.xcconfig"; path = "Pods/Target Support Files/Pods-TwilioVideo-VideoCallKitQuickStart/Pods-TwilioVideo-VideoCallKitQuickStart.release.xcconfig"; sourceTree = "<group>"; };
 		4BAA74EA1D8B5CBE00239F19 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		74A0BF071E41355200D23390 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		74A0BF091E41B13000D23390 /* Call.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Call.swift; sourceTree = "<group>"; };
 		74CB56B31E4010C300A468D4 /* PusherManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PusherManager.swift; sourceTree = "<group>"; };
 		8B79D4661C2252A100489AA5 /* VideoCallKitQuickStart.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VideoCallKitQuickStart.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B79D4691C2252A100489AA5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -156,6 +160,8 @@
 				24166E161DD3AE910004C634 /* ViewController+SimulateIncomingCall.swift */,
 				4BAA74EA1D8B5CBE00239F19 /* Utils.swift */,
 				74CB56B31E4010C300A468D4 /* PusherManager.swift */,
+				74A0BF071E41355200D23390 /* Helpers.swift */,
+				74A0BF091E41B13000D23390 /* Call.swift */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -296,6 +302,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				74CB56B41E4010C300A468D4 /* PusherManager.swift in Sources */,
+				74A0BF0A1E41B13000D23390 /* Call.swift in Sources */,
+				74A0BF081E41355200D23390 /* Helpers.swift in Sources */,
 				8B79D46C1C2252A100489AA5 /* ViewController.swift in Sources */,
 				24166E171DD3AE910004C634 /* ViewController+SimulateIncomingCall.swift in Sources */,
 				8B79D46A1C2252A100489AA5 /* AppDelegate.swift in Sources */,

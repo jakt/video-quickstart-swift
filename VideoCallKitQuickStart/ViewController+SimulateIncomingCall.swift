@@ -10,23 +10,27 @@ import UIKit
 // MARK: Simulate Incoming Call
 extension ViewController {
     
-    @IBAction func simulateIncomingCall(sender: AnyObject) {
-        
-        if accessToken == "TWILIO_ACCESS_TOKEN" {
-            // prompt user to input new token
-            EntryManager.presentEntry(fieldName: "Token", viewController: self, completion: { (result) in
-                EntryManager.presentEntry(fieldName: "User ID", viewController: self, completion: { (userId) in
-                    guard let userId = userId else {return}
-                    PusherManager.shared.sendMessage(type: PusherManager.MessageType.call, userId: userId)
-                    self.performStartCallAction(uuid: UUID.init(), roomName: "Goji-room")
-                })
-            })
+    @IBAction func performOutgoingCall(sender: AnyObject) {
+        if let userId = userIdTextField.text, userId.characters.count > 0 {
+            if accessToken.characters.count > 0 {
+                if let receiverId = roomTextField.text, receiverId.characters.count > 0 {
+                    // Successful. Create call object and start call
+                    
+                    let roomId = "GOJI: "+userId
+                    let uuid = UUID.init()
+                    let info = ["roomId":roomId, "uuid":uuid.uuidString, "sender":userId, "receiver":receiverId]
+                    let newCall = Call(userInfo: info)!
+                    self.callList.append(newCall)
+                    PusherManager.shared.sendMessage(type: PusherManager.MessageType.call, callObject: newCall)
+                    self.performStartCallAction(uuid: UUID.init(), roomName: roomId)
+                } else {
+                    AlertHelper.showAlert(title: "Please enter the ID of a user to call", controller: self)
+                }
+            } else {
+                AlertHelper.showAlert(title: "Please enter your twilio token before making a call", controller: self)
+            }
         } else {
-            EntryManager.presentEntry(fieldName: "User ID of receiver", viewController: self, completion: { (userId) in
-                guard let userId = userId else {return}
-                PusherManager.shared.sendMessage(type: PusherManager.MessageType.call, userId: userId)
-                self.performStartCallAction(uuid: UUID.init(), roomName: "Goji-room")
-            })
+            AlertHelper.showAlert(title: "Please enter your own ID before making a call", controller: self)
         }
     }
 //    

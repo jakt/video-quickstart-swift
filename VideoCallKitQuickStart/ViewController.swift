@@ -17,9 +17,20 @@ class ViewController: UIViewController {
     
     // Configure access token manually for testing, if desired! Create one manually in the console
     // at https://www.twilio.com/user/account/video/dev-tools/testing-tools
-//    var accessToken = "TWILIO_ACCESS_TOKEN"
-//        var accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImN0eSI6InR3aWxpby1mcGE7dj0xIn0.eyJqdGkiOiJTSzdhMDA0MTgwODQ3MDM1Mjk5ZTA2ODk2ZDY5MWFiZWMxLTE0ODU4OTE5NDgiLCJpc3MiOiJTSzdhMDA0MTgwODQ3MDM1Mjk5ZTA2ODk2ZDY5MWFiZWMxIiwic3ViIjoiQUM0OGI1YWE0OGMyNzdmOTE2YTVkNjIxYmU4Y2NhMjcxZiIsImV4cCI6MTQ4NTg5NTU0OCwiZ3JhbnRzIjp7ImlkZW50aXR5Ijoib25lIiwicnRjIjp7ImNvbmZpZ3VyYXRpb25fcHJvZmlsZV9zaWQiOiJWUzVkMDI2MDQxNzNmZWVhYzM0MTIyOTIxZjQzNDc4N2JkIn19fQ.X667SA31BgSivcZxS7RZkuIyMjyuz6D-KZJfCJxgSVY"
-    var accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImN0eSI6InR3aWxpby1mcGE7dj0xIn0.eyJqdGkiOiJTSzdhMDA0MTgwODQ3MDM1Mjk5ZTA2ODk2ZDY5MWFiZWMxLTE0ODU4OTE5MzMiLCJpc3MiOiJTSzdhMDA0MTgwODQ3MDM1Mjk5ZTA2ODk2ZDY5MWFiZWMxIiwic3ViIjoiQUM0OGI1YWE0OGMyNzdmOTE2YTVkNjIxYmU4Y2NhMjcxZiIsImV4cCI6MTQ4NTg5NTUzMywiZ3JhbnRzIjp7ImlkZW50aXR5IjoidHdvIiwicnRjIjp7ImNvbmZpZ3VyYXRpb25fcHJvZmlsZV9zaWQiOiJWUzVkMDI2MDQxNzNmZWVhYzM0MTIyOTIxZjQzNDc4N2JkIn19fQ.6j_yqwTgMQatmuwi_daFDap-tAQNlh5-XQ9jy-TCTtI"
+    var _accessToken = ""
+//        var _accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImN0eSI6InR3aWxpby1mcGE7dj0xIn0.eyJqdGkiOiJTSzdhMDA0MTgwODQ3MDM1Mjk5ZTA2ODk2ZDY5MWFiZWMxLTE0ODU5MjUwNzUiLCJpc3MiOiJTSzdhMDA0MTgwODQ3MDM1Mjk5ZTA2ODk2ZDY5MWFiZWMxIiwic3ViIjoiQUM0OGI1YWE0OGMyNzdmOTE2YTVkNjIxYmU4Y2NhMjcxZiIsImV4cCI6MTQ4NTkyODY3NSwiZ3JhbnRzIjp7ImlkZW50aXR5Ijoib25lb25lIiwicnRjIjp7ImNvbmZpZ3VyYXRpb25fcHJvZmlsZV9zaWQiOiJWUzVkMDI2MDQxNzNmZWVhYzM0MTIyOTIxZjQzNDc4N2JkIn19fQ.cyMsiZSHckOcvQobduRso5wwnLbA03XWAMiSvNNdCtI"
+//    var _accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImN0eSI6InR3aWxpby1mcGE7dj0xIn0.eyJqdGkiOiJTSzdhMDA0MTgwODQ3MDM1Mjk5ZTA2ODk2ZDY5MWFiZWMxLTE0ODU5MDA3NjIiLCJpc3MiOiJTSzdhMDA0MTgwODQ3MDM1Mjk5ZTA2ODk2ZDY5MWFiZWMxIiwic3ViIjoiQUM0OGI1YWE0OGMyNzdmOTE2YTVkNjIxYmU4Y2NhMjcxZiIsImV4cCI6MTQ4NTkwNDM2MiwiZ3JhbnRzIjp7ImlkZW50aXR5Ijoib25lIiwicnRjIjp7ImNvbmZpZ3VyYXRpb25fcHJvZmlsZV9zaWQiOiJWUzVkMDI2MDQxNzNmZWVhYzM0MTIyOTIxZjQzNDc4N2JkIn19fQ.Eh6EcZaG1SJPF3T5tLtZHuJj2Pce10GpmRC3v8RdgRM"
+    var accessToken:String {
+        get {
+//            print(_accessToken)
+            return _accessToken
+        }
+        set {
+            _accessToken = newValue
+            client = nil
+        }
+    }
+    var callList:[Call] = [] // List of all rooms of calls received
     
     // Configure remote URL to fetch token from
     var tokenUrl = "http://localhost:8000/token.php"
@@ -41,13 +52,14 @@ class ViewController: UIViewController {
     // MARK: UI Element Outlets and handles
     @IBOutlet weak var remoteView: UIView!
     @IBOutlet weak var previewView: UIView!
-    @IBOutlet weak var connectButton: UIButton!
     @IBOutlet weak var simulateIncomingButton: UIButton!
     @IBOutlet weak var disconnectButton: UIButton!
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var roomTextField: UITextField!
-    @IBOutlet weak var roomLine: UIView!
-    @IBOutlet weak var roomLabel: UILabel!
+    @IBOutlet weak var tokenTextField: UITextField!
+    @IBOutlet weak var userIdTextField: UITextField!
+    @IBOutlet var roomLines: [UIView]!
+    @IBOutlet var roomLabels: [UILabel]!
     @IBOutlet weak var micButton: UIButton!
 
     required init?(coder aDecoder: NSCoder) {
@@ -87,28 +99,42 @@ class ViewController: UIViewController {
         
         self.roomTextField.delegate = self
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(ViewController.dismissKeyboard))
-        self.view.addGestureRecognizer(tap)
+//        let tap = UITapGestureRecognizer(target: self, action: #selector(ViewController.dismissKeyboard))
+//        self.view.addGestureRecognizer(tap)
+        
+        if let token = UserDefaults.standard.value(forKey: "token") as? String {
+            tokenTextField.text = token
+            accessToken = token
+        }
+        
+        if let userId = UserDefaults.standard.value(forKey: "userId") as? String {
+            userIdTextField.text = userId
+            PusherManager.shared.userId = userId
+        }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.didRecieveCall(_:)), name: NSNotification.Name(rawValue: "call"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.didReceiveHangUp(_:)), name: NSNotification.Name(rawValue: "hangup"), object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        EntryManager.presentEntry(fieldName: "User Name", viewController: self) { (userId:String?) in
-            PusherManager.shared.userId = userId
-        }
-        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.didRecieveCall), name: NSNotification.Name(rawValue: "call"), object: nil)
     }
     
-    func didRecieveCall() {
-        self.reportIncomingCall(uuid: UUID(), roomName: self.roomTextField.text) { _ in
-//
+    func didRecieveCall(_ notification:Notification) {
+        guard let info = notification.userInfo as? [String : Any],
+            let call = Call(userInfo: info) else {return}
+        
+        // Add the room name to the list of calls
+        self.callList.append(call)
+        
+        self.reportIncomingCall(uuid: call.uuid, roomName: call.roomId) { _ in
+            //
         }
     }
-
-    // MARK: IBActions
-    @IBAction func connect(sender: AnyObject) {
-        performStartCallAction(uuid: UUID.init(), roomName: self.roomTextField.text)
-        self.dismissKeyboard()
+    
+    func didReceiveHangUp(_ notification:Notification) {
+        AlertHelper.showAlert(title: "User declined call", controller: self)
+        disconnect(sender: self)
     }
 
     @IBAction func disconnect(sender: AnyObject) {
@@ -179,11 +205,15 @@ class ViewController: UIViewController {
 
     // Update our UI based upon if we are in a Room or not
     func showRoomUI(inRoom: Bool) {
-        self.connectButton.isHidden = inRoom
+        self.simulateIncomingButton.isHidden = inRoom
+        self.simulateIncomingButton.isHidden = inRoom
+        self.simulateIncomingButton.isHidden = inRoom
         self.simulateIncomingButton.isHidden = inRoom
         self.roomTextField.isHidden = inRoom
-        self.roomLine.isHidden = inRoom
-        self.roomLabel.isHidden = inRoom
+        roomLines.forEach({$0.isHidden = inRoom})
+        roomLabels.forEach({$0.isHidden = inRoom})
+        userIdTextField.isHidden = inRoom
+        tokenTextField.isHidden = inRoom
         self.micButton.isHidden = !inRoom
         self.disconnectButton.isHidden = !inRoom
         UIApplication.shared.isIdleTimerDisabled = inRoom
@@ -218,8 +248,15 @@ class ViewController: UIViewController {
 // MARK: UITextFieldDelegate
 extension ViewController : UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.connect(sender: textField)
-        return true
+        if textField == self.userIdTextField, let userId = textField.text {
+            PusherManager.shared.userId = userId
+            UserDefaults.standard.set(userId, forKey: "userId")
+        } else if textField == tokenTextField, let token = textField.text {
+            UserDefaults.standard.set(token, forKey: "token")
+            accessToken = token
+        }
+        textField.resignFirstResponder()
+        return false
     }
 }
 
@@ -234,6 +271,10 @@ extension ViewController : TVIRoomDelegate {
         if (room.participants.count > 0) {
             self.participant = room.participants[0]
             self.participant?.delegate = self
+        }
+        
+        if let callObject = callList.filter({$0.roomId == room.name}).first {
+            callObject.timeStarted = Date()
         }
 
         let cxObserver = callKitCallController.callObserver
@@ -277,6 +318,8 @@ extension ViewController : TVIRoomDelegate {
     func room(_ room: TVIRoom, participantDidDisconnect participant: TVIParticipant) {
         if (self.participant == participant) {
             cleanupRemoteParticipant()
+            // End call
+            disconnect(sender: self)
         }
         logMessage(messageText: "Room \(room.name), Participant \(participant.identity) disconnected")
     }

@@ -15,18 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    func application(_ application: UIApplication,
-                     didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
-
-//        let url = URL(string: "")!
-//        let config = SocketIOClientConfiguration()
-//        let socket = SocketIOClient(socketURL: url, config: config)
-//        
-//        socket.on("connect") { (data:[Any], ack:SocketAckEmitter) in
-//            print("test")
-//        }
-        
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         PusherManager.shared.setupPusher()
         
         return true
@@ -58,23 +47,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationWillEnterForeground(_ application: UIApplication) {
         PusherManager.shared.invalidateBackgroundTask()
-    }
-}
-
-class AuthRequestBuilderOld: AuthRequestBuilderProtocol {
-    func requestFor(socketID: String, channel: PusherChannel) -> NSMutableURLRequest? {
-        let request = NSMutableURLRequest(url: URL(string: "http://localhost:9292/pusher/auth")!)
-        request.httpMethod = "POST"
-        request.httpBody = "socket_id=\(socketID)&channel_name=\(channel.name)".data(using: String.Encoding.utf8)
-        return request
-    }
-}
-
-class AuthRequestBuilder: AuthRequestBuilderProtocol {
-    func requestFor(socketID: String, channelName: String) -> URLRequest? {
-        var request = URLRequest(url: URL(string: "http://localhost:9292/pusher/auth")!)
-        request.httpMethod = "POST"
-        request.httpBody = "socket_id=\(socketID)&channel_name=\(channelName)".data(using: String.Encoding.utf8)
-        return request
     }
 }

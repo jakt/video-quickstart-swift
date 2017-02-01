@@ -67,7 +67,10 @@ extension ViewController : CXProviderDelegate {
          */
         self.localMedia?.audioController.configureAudioSession(.videoChatSpeaker)
 
-        performRoomConnect(uuid: action.callUUID, roomName: self.roomTextField.text) { (success) in
+        let uuid = action.callUUID
+        let call = callList.filter({$0.uuid == uuid}).first
+        let roomName = call?.roomId
+        performRoomConnect(uuid: uuid, roomName: roomName) { (success) in
             if (success) {
                 action.fulfill(withDateConnected: Date())
             } else {
@@ -81,6 +84,12 @@ extension ViewController : CXProviderDelegate {
 
         localMedia?.audioController.stopAudio()
         room?.disconnect()
+        
+        let uuid = action.callUUID
+        let calls = callList.filter({$0.uuid == uuid})
+        if calls.count == 1, let call = calls.first, call.timeStarted == nil {
+            PusherManager.shared.sendMessage(type: PusherManager.MessageType.hangup, callObject: call)
+        }
 
         action.fulfill()
     }

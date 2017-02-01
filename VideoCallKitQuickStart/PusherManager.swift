@@ -57,22 +57,23 @@ public class PusherManager {
         let chan = pusher.subscribe(channel)
         
         chan.bind(eventName: "client-call", callback: { data in
-            print(data)
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "call"), object: nil, userInfo: nil)
+            print(data ?? "Call data is nil")
+            guard let userInfo = data as? [String:Any] else {return}
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "call"), object: nil, userInfo: userInfo)
         })
         
         chan.bind(eventName: "client-hangup", callback: { data in
-            print(data)
+            print(data ?? "Hang up data is nil")
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "hangup"), object: nil, userInfo: nil)
         })
         
         chan.bind(eventName: "client-ack", callback: { data in
-            print(data)
+            print(data ?? "Acknowledgement data is nil")
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ack"), object: nil, userInfo: nil)
         })
         
         chan.bind(eventName: "client-test", callback: { data in
-            print(data)
+            print(data ?? "Test data is nil")
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "test"), object: nil, userInfo: nil)
         })
     }
@@ -84,18 +85,21 @@ public class PusherManager {
         case test
     }
     
-    public func sendMessage(type:MessageType, userId:String) {
+    public func sendMessage(type:MessageType, callObject:Call) {
         // triggers a client event
-        let chan = pusher.subscribe("private-" + userId)
-
+        
         switch type {
         case .call:
-            chan.trigger(eventName: "client-call", data: ["test": "some value"])
+            let chan = pusher.subscribe("private-" + callObject.receiverName)
+            chan.trigger(eventName: "client-call", data: callObject.rawInfo)
         case .hangup:
-            chan.trigger(eventName: "client-hangup", data: ["test": "some value"])
+            let chan = pusher.subscribe("private-" + callObject.senderName)
+            chan.trigger(eventName: "client-hangup", data: callObject.rawInfo)
         case .ack:
+            let chan = pusher.subscribe("private-" + callObject.receiverName)
             chan.trigger(eventName: "client-ack", data: ["test": "some value"])
         case .test:
+            let chan = pusher.subscribe("private-" + callObject.receiverName)
             chan.trigger(eventName: "client-test", data: ["test": "some value"])
         }
     }
